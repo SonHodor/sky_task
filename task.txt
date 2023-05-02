@@ -1,0 +1,72 @@
+Дано: 
+
+В БД-источнике лежат данные о следующих сущностях: 	
+поток - группа студентов (таблица stream) 	
+профессия/курс, который изучают на потоке (таблица course) 	
+модули, которые входят в состав курса/профессии (таблица stream_module) 	
+уроки, которые входят в модули (таблица stream_module_lesson)
+
+Схема данных в источнике:
+
+create table stream
+(
+   id                     integer primary key,
+   course_id              integer,
+   start_at               timestamp,
+   end_at                 timestamp,
+   created_at             timestamp,
+   updated_at             timestamp,
+   deleted_at             timestamp,
+   is_open                boolean,
+   name                   varchar(255),
+   homework_deadline_days integer
+);
+
+create table course
+(
+   id                    integer      primary key,
+   title                 varchar(255),
+   created_at            timestamp,
+   updated_at            timestamp,
+   deleted_at            timestamp(0),
+   icon_url              varchar(255),
+   is_auto_course_enroll boolean,
+   is_demo_enroll        boolean
+);
+
+create table stream_module
+(
+   id  integer primary key,
+   stream_id       integer,
+   title           varchar(255),
+   created_at      timestamp,
+   updated_at      timestamp,
+   order_in_stream integer,
+   deleted_at      timestamp
+);
+
+create table stream_module_lesson
+(
+   id                          integer primary key,
+   title                       varchar(255),
+   description                 text,
+   start_at                    timestamp,
+   end_at                      timestamp,
+   homework_url                varchar(500),
+   teacher_id                  integer,
+   stream_module_id            integer,
+   deleted_at                  timestamp(0),
+   online_lesson_join_url      varchar(255),
+   online_lesson_recording_url varchar(255)
+);
+
+Постановка задачи: 
+
+Данные необходимо перенести в DWH и хранить там наиболее оптимальным (на твой взгляд) образом. Для этого требуется: 	
+1. Нарисовать схему модели данных, используя одну из известных методологий.
+2. Объяснить, почему выбрана именно такая методология.	
+3. На основе схемы из п.1 реализовать ELT/ETL процесс, который по расписанию инкрементально выгружает данные из БД-источника в DWH.
+4. Написать SQL код витрины данных с уроками для анализа и визуализации
+
+Результат выполнения задачи:
+Один или несколько файлов, залитые в публичный доступ на github.com
